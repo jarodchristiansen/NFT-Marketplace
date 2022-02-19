@@ -3,6 +3,7 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from "web3modal"
+import Link from 'next/link'
 
 import {
     nftmarketaddress, nftaddress
@@ -53,12 +54,15 @@ export default function MyAssets() {
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
                     {
                         nfts.map((nft, i) => (
-                            <div key={i} className="border shadow rounded-xl overflow-hidden">
-                                <img src={nft.image} className="rounded" />
-                                <div className="p-4 bg-black">
-                                    <p className="text-2xl font-bold text-white">Price - {nft.price} Matic</p>
+                            <Link href={`/assets/${nft.tokenId}`}>
+                                <div key={i} className="border shadow rounded-xl overflow-hidden">
+                                    <img src={nft.image} className="rounded" />
+                                    <div className="p-4 bg-black">
+                                        <p className="text-2xl font-bold text-white">Price - {nft.price} Matic</p>
+                                    </div>
                                 </div>
-                            </div>
+                            </Link>
+
                         ))
                     }
                 </div>
