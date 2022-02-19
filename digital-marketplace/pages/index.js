@@ -3,7 +3,8 @@ import { ethers } from 'ethers'
 import { useEffect, useState } from 'react'
 import axios from 'axios'
 import Web3Modal from "web3modal"
-
+import "react-loader-spinner/dist/loader/css/react-spinner-loader.css";
+import Loader from 'react-loader-spinner'
 
 import {
   nftaddress, nftmarketaddress
@@ -11,6 +12,7 @@ import {
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/Market.sol/NFTMarket.json'
+import LoadingSpinner from "../components/loading-spinner";
 
 export default function Home() {
   const [nfts, setNfts] = useState([])
@@ -20,6 +22,7 @@ export default function Home() {
   }, [])
   async function loadNFTs() {
     /* create a generic provider and query for unsold market items */
+    setLoadingState('loading')
     const provider = new ethers.providers.JsonRpcProvider('https://rpc-mumbai.matic.today/')
     const tokenContract = new ethers.Contract(nftaddress, NFT.abi, provider)
     const marketContract = new ethers.Contract(nftmarketaddress, Market.abi, provider)
@@ -64,20 +67,23 @@ export default function Home() {
     loadNFTs()
   }
   if (loadingState === 'loaded' && !nfts.length) return (<h1 className="px-20 py-10 text-3xl">No items in marketplace</h1>)
+  if (loadingState === 'loading') return (
+      <LoadingSpinner />
+  )
   return (
   <div className="flex justify-center">
         <div className="px-4" style={{ maxWidth: '1600px' }}>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4">
             {
               nfts.map((nft, i) => (
-                  <div key={i} className="rounded-md overflow-hidden max-w-sm ">
+                  <div key={i} className="rounded-md max-w-sm ">
                       <img src={nft.image} />
-                      <div className=" border p-4">
+                      <div className=" border p-4 overflow-hidden">
                         <p style={{ height: '64px' }} className="text-2xl font-semibold text-center">{nft.name}</p>
                         <hr
                         className={"w-full border-b-2 border-black bg-black mb-4"}
                         />
-                        <div style={{ height: '70px', overflow: 'hidden' }}>
+                        <div className="hover:overflow-y-auto">
                           <p className="text-gray-400 text-center">{nft.description}</p>
                         </div>
                       </div>

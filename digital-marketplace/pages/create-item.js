@@ -12,11 +12,16 @@ import {
 
 import NFT from '../artifacts/contracts/NFT.sol/NFT.json'
 import Market from '../artifacts/contracts/Market.sol/NFTMarket.json'
+import LoadingSpinner from "../components/loading-spinner";
 
 export default function CreateItem() {
 
+    const [loadingState, setLoadingState] = useState('loaded');
+    const [fileLoading, setFileLoading] = useState(false);
+    const [loadingMessage, setLoadingMessage] = useState();
+
     useEffect(() => {
-      console.log('CreateItem useEffect')
+
     }, [])
 
     const [fileUrl, setFileUrl] = useState(null)
@@ -24,7 +29,8 @@ export default function CreateItem() {
     const router = useRouter()
 
     async function onChange(e) {
-        const file = e.target.files[0]
+        const file = e.target.files[0];
+        setFileLoading(true);
         try {
             const added = await client.add(
                 file,
@@ -34,7 +40,9 @@ export default function CreateItem() {
             )
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
             setFileUrl(url)
+            setFileLoading(false)
         } catch (error) {
+            setFileLoading(false)
             console.log('Error uploading file: ', error)
         }
     }
@@ -42,15 +50,21 @@ export default function CreateItem() {
         const { name, description, price } = formInput
         if (!name || !description || !price || !fileUrl) return
         /* first, upload to IPFS */
+        setLoadingState('loading');
         const data = JSON.stringify({
             name, description, image: fileUrl
         })
         try {
+            setLoadingMessage('Attempting to create market for this NFT, please wait...');
             const added = await client.add(data)
             const url = `https://ipfs.infura.io/ipfs/${added.path}`
             /* after file is uploaded to IPFS, pass the URL to save it on Polygon */
-            createSale(url)
+            createSale(url);
+            setLoadingMessage('Market Created');
+            setLoadingState('loaded');
         } catch (error) {
+            setLoadingState('loaded');
+            setLoadingMessage(`${error}`);
             console.log('Error uploading file: ', error)
         }
     }
@@ -60,8 +74,9 @@ export default function CreateItem() {
         const connection = await web3Modal.connect()
         const provider = new ethers.providers.Web3Provider(connection)
         const signer = provider.getSigner()
-
+        setLoadingState('loading');
         /* next, create the item */
+        setLoadingMessage('Attempting to create NFT auction, please wait...');
         let contract = new ethers.Contract(nftaddress, NFT.abi, signer)
         let transaction = await contract.createToken(url)
         let tx = await transaction.wait()
@@ -78,43 +93,57 @@ export default function CreateItem() {
 
 
         transaction = await contract.createMarketItem(nftaddress, tokenId, price, { value: listingPrice })
-        await transaction.wait()
+        await transaction.wait();
+        setLoadingMessage('Item listed successfully!, you are being rerouted to the marketplace');
+        setLoadingState('loaded');
         router.push('/')
     }
 
     return (
         <div className="flex justify-center">
-            <div className="w-1/2 flex flex-col pb-12">
-                <input
-                    placeholder="Asset Name"
-                    className="mt-8 border rounded p-4"
-                    onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
-                />
-                <textarea
-                    placeholder="Asset Description"
-                    className="mt-2 border rounded p-4"
-                    onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
-                />
-                <input
-                    placeholder="Asset Price in Eth"
-                    className="mt-2 border rounded p-4"
-                    onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
-                />
-                <input
-                    type="file"
-                    name="Asset"
-                    className="my-4"
-                    onChange={onChange}
-                />
-                {
-                    fileUrl && (
-                        <img className="rounded mt-4" width="350" src={fileUrl} />
-                    )
-                }
-                <button onClick={createMarket} className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg">
-                    Create Digital Asset
-                </button>
-            </div>
+            {loadingState == "loading" ? (
+                <div>
+                    <LoadingSpinner />
+                    <h1>{loadingMessage && loadingMessage}</h1>
+                </div>
+            ) : (
+                <div className="w-1/2 flex flex-col pb-12">
+                    <input
+                        placeholder="Asset Name"
+                        className="mt-8 border rounded p-4"
+                        onChange={e => updateFormInput({ ...formInput, name: e.target.value })}
+                    />
+                    <textarea
+                        placeholder="Asset Description"
+                        className="mt-2 border rounded p-4"
+                        onChange={e => updateFormInput({ ...formInput, description: e.target.value })}
+                    />
+                    <input
+                        placeholder="Asset Price in Eth"
+                        className="mt-2 border rounded p-4"
+                        onChange={e => updateFormInput({ ...formInput, price: e.target.value })}
+                    />
+                    {fileLoading ? (
+                        <LoadingSpinner/>
+                    ): (
+                        <input
+                            type="file"
+                            name="Asset"
+                            className="my-4"
+                            onChange={onChange}
+                        />
+                    )}
+
+                    {
+                        fileUrl && (
+                            <img className="rounded mt-4" width="350" src={fileUrl} />
+                        )
+                    }
+                    <button onClick={createMarket} className="font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg">
+                        Create Digital Asset
+                    </button>
+                </div>
+            )}
         </div>
     )
 }
