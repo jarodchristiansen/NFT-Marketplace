@@ -4,7 +4,7 @@
   "private": true,
   "scripts": {
     "dev": "next dev",
-    "build": "npx hardhat compile next build",
+    "build": "npx hardhat compile && next build",
     "start": "next start"
   },
   "dependencies": {
