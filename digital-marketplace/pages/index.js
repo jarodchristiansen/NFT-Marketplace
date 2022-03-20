@@ -93,17 +93,17 @@ export default function Home() {
 
   )
   return (
-      <div className="space-y-24 md:space-y-48 mt-10" data-testid="home-main">
+      <div className="space-y-16 md:space-y-48 mt-10" data-testid="home-main">
 
-        <div className="flex justify-center flex flex-col md:flex-row md:space-x-60">
-          <div className="flex justify-center ml-6" data-testid={"image-holder"}>
+        <div className="flex justify-center flex flex-col md:flex-row md:space-x-60 lg:space-x-52">
+          <div className="flex justify-center" data-testid={"image-holder"}>
             {/*<img src={nfts[0].image} alt={nfts[0].name} className="w-64 h-64" />*/}
             {nfts && nfts.length > 1 && (
-                <ImageFrame image={nfts[0].image} className={"md:max-w-lg"}/>
+                <ImageFrame image={nfts[0].image} className={"shadow-xl md:max-w-lg"}/>
             )}
-
           </div>
-          <div className="flex justify-center flex-col">
+
+          <div className="flex justify-center flex-col mt-10">
             <h1 className={"text-2xl text-center"}>Disover, collect and sell extraordinary NFTS</h1>
             <div className="sm:flex-col md:flex-row self-center">
               <Button label={"Explore"} className={"font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg w-auto mr-2.5"} datatestId='explore-button'/>
@@ -111,6 +111,8 @@ export default function Home() {
             </div>
           </div>
         </div>
+
+
         <div className="h-fit w-full">
           <div className="px-4" style={{ maxWidth: '1600px' }}>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4" data-testid='nft-grid'>
