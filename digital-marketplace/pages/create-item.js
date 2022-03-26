@@ -12,6 +12,8 @@ import { nftaddress, nftmarketaddress } from "../config";
 import NFT from "../artifacts/contracts/NFT.sol/NFT.json";
 import Market from "../artifacts/contracts/Market.sol/NFTMarket.json";
 import LoadingSpinner from "../components/loading-spinner";
+import { Canvas } from "../components/CreatePage/Canvas/Canvas";
+import { ClearCanvasButton } from "../components/CreatePage/Canvas/ClearCanvasButton";
 
 export default function CreateItem() {
   const [loadingState, setLoadingState] = useState("loaded");
@@ -24,6 +26,11 @@ export default function CreateItem() {
 
   useEffect(() => {
     let uploadButton = document.getElementById("upload-button");
+    console.log("this is the useEffect");
+    window.addEventListener("beforeunload", function (e) {
+      e.preventDefault();
+      e.returnValue = "";
+    });
   }, []);
 
   const [fileUrl, setFileUrl] = useState(null);
@@ -127,7 +134,8 @@ export default function CreateItem() {
       console.log("Error uploading file: ", error);
     }
   }
-  async function createMarket() {
+  async function createMarket(e) {
+    e.preventDefault();
     const { name, description, price } = formInput;
 
     if (!name || !description || !price || !fileUrl) return;
@@ -215,7 +223,7 @@ export default function CreateItem() {
       ) : (
         <form
           className="sm:w-1/2 flex flex-col pb-12 outline outline-1 mt-12 w-5/6 shadow-2xl"
-          onSubmit={createMarket}
+          onSubmit={(e) => createMarket(e)}
         >
           <h2 className={"text-2xl text-center my-8"}>Create Your NFT</h2>
           <input
@@ -272,15 +280,22 @@ export default function CreateItem() {
           ) : (
             <>
               {!fileUrl ? (
-                <label className={"custom-file-upload" + " " + formButton}>
-                  <p className={"text-md font-bold text-center sm:"}>Upload</p>
-                  <input
-                    type="file"
-                    name="Asset"
-                    className="my-4 hidden"
-                    onChange={onChange}
-                  />
-                </label>
+                <>
+                  <label className={"custom-file-upload" + " " + formButton}>
+                    <p className={"text-md font-bold text-center"}>Upload</p>
+                    <input
+                      type="file"
+                      name="Asset"
+                      className="my-4 hidden"
+                      onChange={onChange}
+                    />
+                    {/*<SketchComponent />*/}
+                  </label>
+                  <div className={"max-w-fit"}>
+                    <Canvas />
+                    <ClearCanvasButton />
+                  </div>
+                </>
               ) : (
                 <button onClick={() => setFileUrl("")} className={formButton}>
                   Delete To Upload A Different Image
