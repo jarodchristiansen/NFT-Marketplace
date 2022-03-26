@@ -40,13 +40,21 @@ export const CanvasProvider = ({ children }) => {
     setIsDrawing(false);
   };
 
-  const draw = ({ nativeEvent }) => {
+  const draw = (e) => {
+    const { nativeEvent } = e;
+    e.preventDefault();
+    e.stopPropagation();
     if (!isDrawing) {
       return;
     }
     const { offsetX, offsetY } = nativeEvent;
-    contextRef.current.lineTo(offsetX, offsetY);
-    contextRef.current.stroke();
+    if (offsetX && offsetY) {
+      contextRef.current.lineTo(offsetX, offsetY);
+      contextRef.current.stroke();
+    } else if (e.touches[0].clientX && e.touches[0].clientY) {
+      contextRef.current.lineTo(e.touches[0].clientX, e.touches[0].clientY);
+      contextRef.current.stroke();
+    }
   };
 
   const clearCanvas = () => {

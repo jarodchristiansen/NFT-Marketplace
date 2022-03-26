@@ -11,12 +11,15 @@ export function Canvas() {
 
   return (
     <canvas
-      // onMouseDown={startDrawing}
-      // onMouseUp={finishDrawing}
-      onPointerDown={startDrawing}
-      onPointerUp={finishDrawing}
-      onPointerMove={draw}
-      // onMouseMove={draw}
+      onMouseDown={startDrawing}
+      onMouseUp={finishDrawing}
+      onMouseMove={draw}
+      // onPointerDown={startDrawing}
+      // onPointerUp={finishDrawing}
+      // onPointerMove={draw}
+      onTouchStart={startDrawing}
+      onTouchEnd={finishDrawing}
+      onTouchMove={draw}
       ref={canvasRef}
       className={"outline outline-2 outline-black"}
     />
