@@ -27,10 +27,10 @@ export default function CreateItem() {
   useEffect(() => {
     let uploadButton = document.getElementById("upload-button");
     console.log("this is the useEffect");
-    window.addEventListener("beforeunload", function (e) {
-      e.preventDefault();
-      e.returnValue = "";
-    });
+    // window.addEventListener("beforeunload", function (e) {
+    //   e.preventDefault();
+    //   e.returnValue = "";
+    // });
   }, []);
 
   const [fileUrl, setFileUrl] = useState(null);
