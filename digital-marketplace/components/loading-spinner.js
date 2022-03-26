@@ -16,8 +16,8 @@ function LoadingSpinner(props) {
     <div>
       <Lottie
         options={defaultOptions}
-        height={400}
-        width={400}
+        height={300}
+        width={300}
         style={{
           cursor: "default",
           position: props?.position ? props.position : "absolute",
@@ -25,7 +25,7 @@ function LoadingSpinner(props) {
           marginRight: "auto",
           left: 0,
           right: 0,
-          top: 200,
+          top: 100,
           textAlign: "center",
         }}
         isClickToPauseDisabled={true}

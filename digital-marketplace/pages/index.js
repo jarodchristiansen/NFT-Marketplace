@@ -14,6 +14,8 @@ import LoadingSpinner from "../components/loading-spinner";
 import ImageFrame from "../components/commons/ImageFrame";
 import Button from "../components/commons/Button";
 import Link from "next/link";
+import ExploreBanner from "../components/HomePage/ExploreBanner";
+import NFTCard from "../components/HomePage/NFTCard";
 
 export default function Home() {
   const [loadingState, setLoadingState] = useState("not-loaded");
@@ -67,11 +69,6 @@ export default function Home() {
     setLoadingState("loaded");
   }
 
-  async function redirectToCreate(event) {
-    event.preventDefault();
-    router.push("/create-item");
-  }
-
   async function buyNft(nft) {
     /* needs the user to sign the transaction, so will use Web3Provider and sign it */
     const web3Modal = new Web3Modal();
@@ -106,81 +103,88 @@ export default function Home() {
   //     </>
   //   );
   return (
-    <div className="space-y-16 md:space-y-48 mt-10" data-testid="home-main">
+    <div className="space-y-16 md:space-y-32 mt-10" data-testid="home-main">
       <div className="flex justify-center flex flex-col md:flex-row md:space-x-60 lg:space-x-52">
         <div className="flex justify-center" data-testid={"image-holder"}>
           <ImageFrame
             image={
               "https://media.wired.com/photos/622bde93d53a49d05c484009/master/pass/NFTs-Don't-Work-They-Way-You-Think-Gear-1239020052.jpg"
             }
-            className={"shadow-2xl md:max-w-xl"}
+            className={
+              "shadow-2xl md:max-w-xl outline outline-1 outline-pink-500"
+            }
           />
         </div>
 
-        <div className="flex justify-center flex-col mt-10">
-          <h1 className={"text-2xl text-center"}>
-            Disover, collect and sell extraordinary NFTS
-          </h1>
-          <div className="sm:flex-col md:flex-row self-center">
-            <Button
-              label={"Explore"}
-              className={
-                "font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg w-auto mr-2.5"
-              }
-              datatestId="explore-button"
-            />
-            <Button
-              label={"Create"}
-              className={
-                "font-bold mt-4 text-pink-500 outline outline-1 outline-pink-500 rounded p-4 shadow-lg w-auto ml-2.5"
-              }
-              datatestId="create-button"
-              onClick={redirectToCreate}
-            />
-          </div>
-        </div>
+        <ExploreBanner />
+        {/*<div className="flex justify-center flex-col mt-10">*/}
+        {/*  <h1 className={"text-2xl text-center"}>*/}
+        {/*    Explore, collect, and sell amazing assets*/}
+        {/*  </h1>*/}
+        {/*  <div className="sm:flex-col md:flex-row self-center">*/}
+        {/*    <Button*/}
+        {/*      label={"Explore"}*/}
+        {/*      className={*/}
+        {/*        "font-bold mt-4 bg-pink-500 text-white rounded p-4 shadow-lg w-auto mr-2.5"*/}
+        {/*      }*/}
+        {/*      datatestId="explore-button"*/}
+        {/*    />*/}
+        {/*    <Button*/}
+        {/*      label={"Create"}*/}
+        {/*      className={*/}
+        {/*        "font-bold mt-4 text-pink-500 outline outline-1 outline-pink-500 rounded p-4 shadow-lg w-auto ml-2.5"*/}
+        {/*      }*/}
+        {/*      datatestId="create-button"*/}
+        {/*      onClick={redirectToCreate}*/}
+        {/*    />*/}
+        {/*  </div>*/}
+        {/*</div>*/}
       </div>
 
-      <div className="h-fit w-full">
+      <div className="h-fit w-full flex justify-center items-center">
         <div className="px-4" style={{ maxWidth: "1600px" }}>
           {loadingState === "loading" ? (
-            <LoadingSpinner position={"relative"} />
+            <>
+              <h1 className={"text-2xl text-center"}>Loading NFTS</h1>
+              <LoadingSpinner position={"relative"} />
+            </>
           ) : (
             <div
-              className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 pt-4"
+              className="grid place-items-center grid-cols-1 sm:grid-cols-2 md:grid-cols-4 grid-rows-2 gap-24 flex items-start"
               data-testid="nft-grid"
             >
               {nfts.map((nft, i) => (
-                <div key={i} className="rounded-md max-w-sm ">
-                  <img src={nft.image} />
-                  <div className=" border p-4 overflow-hidden">
-                    <p
-                      style={{ height: "64px" }}
-                      className="text-2xl font-semibold text-center"
-                    >
-                      {nft.name}
-                    </p>
-                    <hr
-                      className={"w-full border-b-2 border-black bg-black mb-4"}
-                    />
-                    <div className="hover:overflow-y-auto">
-                      <p className="text-gray-400 text-center">
-                        {nft.description}
-                      </p>
-                    </div>
-                  </div>
-                  <div className="p-4 bg-black ">
-                    <p className="text-2xl mb-6 font-bold text-tahiti text-center">
-                      {nft.price} Matic
-                    </p>
-                    <button
-                      className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded"
-                      onClick={() => buyNft(nft)}
-                    >
-                      Buy
-                    </button>
-                  </div>
-                </div>
+                // <div key={i} className="rounded-md max-w-sm ">
+                //   <img src={nft.image} />
+                //   <div className=" border p-4 overflow-hidden">
+                //     <p
+                //       style={{ height: "64px" }}
+                //       className="text-2xl font-semibold text-center"
+                //     >
+                //       {nft.name}
+                //     </p>
+                //     <hr
+                //       className={"w-full border-b-2 border-black bg-black mb-4"}
+                //     />
+                //     <div className="hover:overflow-y-auto">
+                //       <p className="text-gray-400 text-center">
+                //         {nft.description}
+                //       </p>
+                //     </div>
+                //   </div>
+                //   <div className="p-4 bg-black ">
+                //     <p className="text-2xl mb-6 font-bold text-tahiti text-center">
+                //       {nft.price} Matic
+                //     </p>
+                //     <button
+                //       className="w-full bg-pink-500 text-white font-bold py-2 px-12 rounded"
+                //       onClick={() => buyNft(nft)}
+                //     >
+                //       Buy
+                //     </button>
+                //   </div>
+                // </div>
+                <NFTCard nft={nft} i={i} />
               ))}
             </div>
           )}
