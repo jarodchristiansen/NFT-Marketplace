@@ -13,6 +13,9 @@ export function Canvas() {
     <canvas
       onMouseDown={startDrawing}
       onMouseUp={finishDrawing}
+      onPointerDown={startDrawing}
+      onPointerUp={finishDrawing}
+      onPointerMove={draw}
       onMouseMove={draw}
       ref={canvasRef}
       className={"outline outline-2 outline-black"}
