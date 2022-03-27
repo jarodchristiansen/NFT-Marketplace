@@ -14,11 +14,21 @@ export const CanvasProvider = ({ children }) => {
     // canvas.style.maxWidth = `${window.innerWidth / 2}px`;
     // canvas.style.height = `${window.innerHeight}px`;
     // canvas.style.position = "relative";
-
     canvas.style.width = "100%";
     canvas.style.height = "100%";
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    if (window?.innerWidth > 400) {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    } else {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight / 0.9;
+    }
+
+    console.log(
+      "this is the window.innerWidth/height",
+      window.innerWidth,
+      window.innerHeight
+    );
 
     const context = canvas.getContext("2d");
     context.scale(2, 2);
@@ -30,6 +40,9 @@ export const CanvasProvider = ({ children }) => {
 
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
+    // document.body.style.height = "100vh";
+    // document.body.style.overflowY = "hidden";
+    // document.body.style.position = "fixed";
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
     setIsDrawing(true);
@@ -38,11 +51,13 @@ export const CanvasProvider = ({ children }) => {
   const finishDrawing = () => {
     contextRef.current.closePath();
     setIsDrawing(false);
+    document.body.style.position = "";
+    document.body.style.overflowY = "auto";
   };
 
   const draw = (e) => {
     const { nativeEvent } = e;
-    e.preventDefault();
+    // e.preventDefault();
     e.stopPropagation();
     if (!isDrawing) {
       return;
