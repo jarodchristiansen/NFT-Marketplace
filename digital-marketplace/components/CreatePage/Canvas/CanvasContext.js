@@ -41,7 +41,6 @@ export const CanvasProvider = ({ children }) => {
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     // document.body.style.height = "100vh";
-    document.body.style.overflowY = "hidden";
     // document.body.style.position = "fixed";
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);
@@ -51,8 +50,7 @@ export const CanvasProvider = ({ children }) => {
   const finishDrawing = () => {
     contextRef.current.closePath();
     setIsDrawing(false);
-    document.body.style.position = "";
-    document.body.style.overflowY = "auto";
+
   };
 
   const draw = (e) => {
