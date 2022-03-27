@@ -4,10 +4,14 @@ import { useCanvas } from "./CanvasContext";
 export function Canvas() {
   const { canvasRef, prepareCanvas, startDrawing, finishDrawing, draw } =
     useCanvas();
+  let windowWidth;
+
 
   useEffect(() => {
     prepareCanvas();
-  }, []);
+
+    windowWidth = window?.innerWidth || null
+  }, [windowWidth]);
 
   return (
     <canvas

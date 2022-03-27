@@ -21,7 +21,7 @@ export const CanvasProvider = ({ children }) => {
       canvas.height = window.innerHeight;
     } else {
       canvas.width = window.innerWidth;
-      canvas.height = window.innerHeight / 0.9;
+      canvas.height = window.innerHeight;
     }
 
     console.log(
@@ -41,7 +41,7 @@ export const CanvasProvider = ({ children }) => {
   const startDrawing = ({ nativeEvent }) => {
     const { offsetX, offsetY } = nativeEvent;
     // document.body.style.height = "100vh";
-    // document.body.style.overflowY = "hidden";
+    document.body.style.overflowY = "hidden";
     // document.body.style.position = "fixed";
     contextRef.current.beginPath();
     contextRef.current.moveTo(offsetX, offsetY);

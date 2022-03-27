@@ -7,7 +7,7 @@ export const ClearCanvasButton = () => {
   return (
     <button
       onClick={clearCanvas}
-      className={"bg-tahiti-dark text-white w-full"}
+      className={"text-white"}
     >
       Clear The Canvas
     </button>

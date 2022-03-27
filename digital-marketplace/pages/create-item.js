@@ -292,9 +292,7 @@ export default function CreateItem() {
                     />
                     {/*<SketchComponent />*/}
                   </label>
-                  <div>
-                    <ModalComponent />
-                  </div>
+                  <ModalComponent />
                 </>
               ) : (
                 <button onClick={() => setFileUrl("")} className={formButton}>
@@ -303,6 +301,7 @@ export default function CreateItem() {
               )}
             </>
           )}
+
 
           <button
             type={"submit"}
