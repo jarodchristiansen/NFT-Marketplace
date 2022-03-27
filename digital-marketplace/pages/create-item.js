@@ -14,6 +14,7 @@ import Market from "../artifacts/contracts/Market.sol/NFTMarket.json";
 import LoadingSpinner from "../components/loading-spinner";
 import { Canvas } from "../components/CreatePage/Canvas/Canvas";
 import { ClearCanvasButton } from "../components/CreatePage/Canvas/ClearCanvasButton";
+import ModalComponent from "../components/CreatePage/Modal";
 
 export default function CreateItem() {
   const [loadingState, setLoadingState] = useState("loaded");
@@ -291,9 +292,8 @@ export default function CreateItem() {
                     />
                     {/*<SketchComponent />*/}
                   </label>
-                  <div className={"max-w-fit"}>
-                    <Canvas />
-                    <ClearCanvasButton />
+                  <div>
+                    <ModalComponent />
                   </div>
                 </>
               ) : (
